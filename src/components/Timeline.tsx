@@ -1,6 +1,6 @@
 import React from "react"
 import {connect} from "react-redux"
-import {Avatar, Icon, List, Typography} from "antd"
+import {Avatar, Icon, List, Spin, Typography} from "antd"
 import {Tweet} from "../actions/tweets"
 import 'antd/dist/antd.css'
 
@@ -17,10 +17,17 @@ const IconText = ({type, text}) => (
 class Timeline extends React.Component<any, any> {
   render() {
     const {tweets, users} = this.props
+    if (!tweets || !users) {
+      return (
+        <Spin size="large"/>
+      )
+    }
     return <div>
       <Title>Timeline</Title>
-      {tweets && users && (
-        <List size='large' itemLayout='vertical' dataSource={tweets} renderItem={(item: Tweet) => {
+      {(
+        <List
+          loading={Object.keys(tweets).length < 1}
+          size='large' itemLayout='vertical' dataSource={tweets} renderItem={(item: Tweet) => {
           return <List.Item
             key={item.id}
             actions={[
