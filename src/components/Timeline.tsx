@@ -1,27 +1,49 @@
 import React from "react"
 import {connect} from "react-redux"
+import {Avatar, Icon, List, Typography} from "antd"
+import {Tweet} from "../actions/tweets"
+import 'antd/dist/antd.css'
+
+const {Title} = Typography
+
+// @ts-ignore
+const IconText = ({type, text}) => (
+  <span>
+    <Icon type={type} style={{marginRight: 8}}/>
+    {text}
+  </span>
+)
 
 class Timeline extends React.Component<any, any> {
   render() {
-    const {tweets} = this.props
-    return (
-      <div>
-        <h1>Timeline</h1>
-        {tweets && (
-          <ul>
-            {Object.keys(tweets).map(tweet => {
-              return <li key={tweet}>TWEET ID: {tweet}</li>
-            })}
-          </ul>
-        )}
-      </div>
-    )
+    const {tweets, users} = this.props
+    return <div>
+      <Title>Timeline</Title>
+      {tweets && users && (
+        <List size='large' itemLayout='vertical' dataSource={tweets} renderItem={(item: Tweet) => {
+          return <List.Item
+            key={item.id}
+            actions={[
+              <IconText type="like-o" text={item.likes.length} key="list-vertical-like-o"/>,
+              <IconText type="message" text={item.replies.length} key="list-vertical-message"/>,
+            ]}>
+            <List.Item.Meta
+              avatar={users[item.author] && <Avatar src={users[item.author].avatarURL}/>}
+              title={users[item.author] && users[item.author].name}
+            />
+            {item.text}
+          </List.Item>
+        }}
+        />
+      )}
+    </div>
   }
 }
 
 // @ts-ignore
 function mapStateToProps(state) {
-  const {users, tweets} = state
+  let {users, tweets} = state
+  tweets = Object.values(tweets)
   return {
     tweets,
     users

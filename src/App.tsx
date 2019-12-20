@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import {handleInitialData} from "./actions/shared"
 import {connect} from "react-redux"
 import Timeline from "./components/Timeline"
+import './App.css'
 
 const App: React.FC = (props) => {
   // @ts-ignore
@@ -11,7 +12,6 @@ const App: React.FC = (props) => {
   }, [dispatch])
   return (
     <div className="App">
-      <h1>Hello World!</h1>
       <Timeline/>
     </div>
   )
