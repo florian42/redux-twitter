@@ -1,10 +1,9 @@
 import React from "react"
 import {connect} from "react-redux"
-import {Avatar, Icon, List, Spin, Typography} from "antd"
+import {Avatar, Icon, List, Spin} from "antd"
 import {likeTweet, Tweet} from "../actions/tweets"
 import 'antd/dist/antd.css'
 
-const {Title} = Typography
 
 // @ts-ignore
 const IconText = ({type, text, onClick, filled}) => (
@@ -23,7 +22,6 @@ class Timeline extends React.Component<any, any> {
       )
     }
     return <div>
-      <Title>Timeline</Title>
       {(
         <List
           loading={Object.keys(tweets).length < 1}

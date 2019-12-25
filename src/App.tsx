@@ -3,6 +3,7 @@ import {handleInitialData} from "./actions/shared"
 import {connect} from "react-redux"
 import Timeline from "./components/Timeline"
 import './App.css'
+import Compose from "./components/Compose"
 
 const App: React.FC = (props) => {
   // @ts-ignore
@@ -12,6 +13,7 @@ const App: React.FC = (props) => {
   }, [dispatch])
   return (
     <div className="App">
+      <Compose/>
       <Timeline/>
     </div>
   )
