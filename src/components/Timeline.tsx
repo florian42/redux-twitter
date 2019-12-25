@@ -1,22 +1,22 @@
 import React from "react"
 import {connect} from "react-redux"
 import {Avatar, Icon, List, Spin, Typography} from "antd"
-import {Tweet} from "../actions/tweets"
+import {likeTweet, Tweet} from "../actions/tweets"
 import 'antd/dist/antd.css'
 
 const {Title} = Typography
 
 // @ts-ignore
-const IconText = ({type, text}) => (
+const IconText = ({type, text, onClick, filled}) => (
   <span>
-    <Icon type={type} style={{marginRight: 8}}/>
+    <Icon type={type} style={{marginRight: 8}} onClick={onClick} theme={filled ? 'filled' : 'outlined'}/>
     {text}
   </span>
 )
 
 class Timeline extends React.Component<any, any> {
   render() {
-    const {tweets, users} = this.props
+    const {tweets, users, authedUser, dispatch} = this.props
     if (!tweets || !users) {
       return (
         <Spin size="large"/>
@@ -31,8 +31,12 @@ class Timeline extends React.Component<any, any> {
           return <List.Item
             key={item.id}
             actions={[
-              <IconText type="like-o" text={item.likes.length} key="list-vertical-like-o"/>,
-              <IconText type="message" text={item.replies.length} key="list-vertical-message"/>,
+              <IconText type="like-o" text={item.likes.length} key="list-vertical-like-o" onClick={() => {
+                dispatch(likeTweet(item.id, !item.likes.includes(authedUser), authedUser))
+              }} filled={item.likes.includes(authedUser)}/>,
+              <IconText type="message" text={item.replies.length} key="list-vertical-message" onClick={() => {
+                console.log("Answer clicked")
+              }} filled={false}/>,
             ]}>
             <List.Item.Meta
               avatar={users[item.author] && <Avatar src={users[item.author].avatarURL}/>}
@@ -49,11 +53,12 @@ class Timeline extends React.Component<any, any> {
 
 // @ts-ignore
 function mapStateToProps(state) {
-  let {users, tweets} = state
+  let {users, tweets, authedUser} = state
   tweets = Object.values(tweets)
   return {
     tweets,
-    users
+    users,
+    authedUser
   }
 }
 
