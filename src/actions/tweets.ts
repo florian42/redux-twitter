@@ -1,8 +1,9 @@
 import {Dispatch} from "redux"
-import {saveLikeToggle} from "../utils/api"
+import {saveLikeToggle, saveTweetWithPromise} from "../utils/api"
 
 export const RECEIVE_TWEETS = 'RECEIVE_TWEETS'
 export const LIKE = 'LIKE'
+export const SAVE_TWEET = 'SAVE_TWEET'
 
 
 interface ReceiveTweetsAction {
@@ -17,7 +18,12 @@ interface LikeTweetAction {
   hasLiked: boolean
 }
 
-export type TweetsActionTypes = ReceiveTweetsAction | LikeTweetAction
+interface SaveTweetAction {
+  type: typeof SAVE_TWEET
+  tweet: Tweet
+}
+
+export type TweetsActionTypes = ReceiveTweetsAction | LikeTweetAction | SaveTweetAction
 
 export interface Tweet {
   id: string
@@ -31,6 +37,22 @@ export interface Tweet {
 
 export interface Tweets {
   [id: string]: Tweet
+}
+
+export function tweetAction(tweet: Tweet) {
+  return {
+    type: SAVE_TWEET,
+    tweet
+  }
+}
+
+// @ts-ignore
+export function saveTweet({text, author, replyingTo}) {
+  return (dispatch: Dispatch) => {
+    return saveTweetWithPromise({text, author, replyingTo}).then((tweet: Tweet) => {
+      return dispatch(tweetAction(tweet))
+    })
+  }
 }
 
 export function receiveTweets(tweets: Tweets) {

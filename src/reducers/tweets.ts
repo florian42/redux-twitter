@@ -21,6 +21,11 @@ export function tweets(state = initialState, action: TweetsActionTypes): TweetsS
           likes: action.hasLiked ? state[action.tweetId].likes.concat([action.authedUser]) : state[action.tweetId].likes.filter(uid => uid !== action.authedUser)
         }
       }
+    case "SAVE_TWEET":
+      return {
+        ...state,
+        [action.tweet.id]: action.tweet
+      }
     default:
       return state
   }

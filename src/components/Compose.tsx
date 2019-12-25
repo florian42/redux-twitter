@@ -1,11 +1,19 @@
 import React from 'react'
 import {Input} from 'antd'
+import {connect} from "react-redux"
+import {saveTweet} from "../actions/tweets"
 
 const {Search} = Input
 
 
-export default function Compose() {
+// @ts-ignore
+function Compose({authedUser, dispatch}) {
   return <Search placeholder='What is on your mind?' enterButton="Tweet" size='large'
-                 onSearch={value => console.log('Tweeted: ', value)}/>
-
+                 onSearch={text => dispatch(saveTweet({text, author: authedUser, replyingTo: undefined}))}/>
 }
+
+const mapStateToProps = (state: { authedUser: string }) => ({
+  authedUser: state.authedUser
+})
+
+export default connect(mapStateToProps)(Compose)

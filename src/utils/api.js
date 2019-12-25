@@ -14,6 +14,6 @@ export function saveLikeToggle(info) {
   return _saveLikeToggle(info)
 }
 
-export function saveTweet(info) {
+export function saveTweetWithPromise(info) {
   return _saveTweet(info)
 }
