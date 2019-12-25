@@ -8,8 +8,8 @@ import 'antd/dist/antd.css'
 
 function TweetDetails({authedUser, users, tweets, match}: any) {
   const {Meta} = Card
-  const author: User = users[authedUser]
   const tweet: Tweet = tweets[match.params.id]
+  const author: User = users[tweet.author]
   return <Card>
     <Skeleton loading={!tweet || !author} avatar active>
       {tweet && author && (

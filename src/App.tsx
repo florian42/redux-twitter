@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 import {handleInitialData} from "./actions/shared"
 import {connect} from "react-redux"
 import Timeline from "./components/Timeline"
 import './App.css'
-import Compose from "./components/Compose"
+import TweetDetails from "./components/Tweet"
 
 const App: React.FC = (props) => {
   // @ts-ignore
@@ -12,10 +13,12 @@ const App: React.FC = (props) => {
     dispatch(handleInitialData())
   }, [dispatch])
   return (
-    <div className="App">
-      <Compose/>
-      <Timeline/>
-    </div>
+    <Router>
+      <div className="App">
+        <Route path='/' exact component={Timeline}/>
+        <Route path='/tweets/:id' component={TweetDetails}/>
+      </div>
+    </Router>
   )
 }
 

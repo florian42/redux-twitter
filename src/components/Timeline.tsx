@@ -3,6 +3,8 @@ import {connect} from "react-redux"
 import {Avatar, Icon, List, Spin} from "antd"
 import {likeTweet, Tweet} from "../actions/tweets"
 import 'antd/dist/antd.css'
+import Compose from "./Compose"
+import {Link} from 'react-router-dom'
 
 
 // @ts-ignore
@@ -21,7 +23,10 @@ class Timeline extends React.Component<any, any> {
         <Spin size="large"/>
       )
     }
+
+    //<Icon type="info-circle" />
     return <div>
+      <Compose/>
       {(
         <List
           loading={Object.keys(tweets).length < 1}
@@ -38,7 +43,7 @@ class Timeline extends React.Component<any, any> {
             ]}>
             <List.Item.Meta
               avatar={users[item.author] && <Avatar src={users[item.author].avatarURL}/>}
-              title={users[item.author] && users[item.author].name}
+              title={users[item.author] && <Link to={`tweets/${item.id}`}>{users[item.author].name}</Link>}
             />
             {item.text}
           </List.Item>
